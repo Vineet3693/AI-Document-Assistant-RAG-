@@ -331,4 +331,4 @@ Built with:
 
 **Made with ❤️ by the DocuMind AI Team**
 
-*Version 3.0.0 Enterprise - January 2024*
+*Version 3.0.0 Enterprise - March 2026*
