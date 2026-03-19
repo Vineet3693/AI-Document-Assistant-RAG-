@@ -1,0 +1,112 @@
+# DocuMind AI - Configuration File
+# Version: 3.0.0 Enterprise
+
+app:
+  name: "DocuMind AI"
+  version: "3.0.0"
+  environment: "development"
+  port: 8000
+  host: "0.0.0.0"
+  debug: true
+  max_workers: 4
+
+ai:
+  default_model: "gpt-4-turbo"
+  models:
+    openai:
+      enabled: true
+      default_model: "gpt-4-turbo"
+      fallback_model: "gpt-3.5-turbo"
+      max_tokens: 4096
+      temperature: 0.3
+      timeout: 30
+    anthropic:
+      enabled: true
+      default_model: "claude-3-opus-20240229"
+      fallback_model: "claude-3-sonnet-20240229"
+      max_tokens: 4096
+      temperature: 0.3
+      timeout: 30
+
+rag:
+  chunk_size: 1000
+  chunk_overlap: 200
+  top_k: 5
+  similarity_threshold: 0.7
+  max_context_length: 8000
+  enable_multi_document: true
+  enable_citations: true
+  confidence_scoring: true
+
+vector_db:
+  provider: "chroma"  # Options: chroma, pinecone
+  chroma:
+    persist_directory: "./data/vectorstore"
+  pinecone:
+    environment: "us-west1-gcp"
+    index_name: "documind-ai"
+
+documents:
+  allowed_extensions:
+    - ".pdf"
+    - ".docx"
+    - ".txt"
+    - ".csv"
+    - ".xlsx"
+    - ".pptx"
+    - ".md"
+  max_file_size_mb: 50
+  max_batch_size: 10
+  enable_ocr: true
+  enable_table_extraction: true
+  auto_delete_days: 90
+
+features:
+  summarization: true
+  comparison: true
+  extraction: true
+  translation: true
+  question_generation: true
+  risk_detection: true
+  multi_document_qa: true
+  export_pdf: true
+  export_word: true
+  export_excel: true
+
+industry_modes:
+  enabled:
+    - legal
+    - finance
+    - healthcare
+    - hr
+    - research
+    - education
+  default: "general"
+
+security:
+  enable_encryption: true
+  encryption_algorithm: "AES-256"
+  session_timeout_minutes: 60
+  max_login_attempts: 5
+  password_min_length: 8
+  enable_audit_logging: true
+  gdpr_mode: false
+  hipaa_mode: false
+
+rate_limits:
+  requests_per_minute: 60
+  questions_per_day: 1000
+  uploads_per_day: 100
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file_path: "./logs"
+  max_file_size_mb: 5
+  backup_count: 5
+
+monitoring:
+  enable_cost_tracking: true
+  enable_token_tracking: true
+  enable_analytics: true
+  alert_threshold_usd: 100
