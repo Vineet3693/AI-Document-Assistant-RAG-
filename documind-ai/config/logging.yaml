@@ -1,0 +1,130 @@
+# DocuMind AI - Logging Configuration
+# Version: 3.0.0 Enterprise
+
+version: 1
+disable_existing_loggers: False
+
+formatters:
+  standard:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  
+  detailed:
+    format: "%(asctime)s - %(name)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+  
+  json:
+    format: "{\"timestamp\": \"%(asctime)s\", \"level\": \"%(levelname)s\", \"logger\": \"%(name)s\", \"message\": \"%(message)s\"}"
+    datefmt: "%Y-%m-%dT%H:%M:%S"
+
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: INFO
+    formatter: standard
+    stream: ext://sys.stdout
+  
+  file_app:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: ./logs/app.log
+    maxBytes: 5242880  # 5MB
+    backupCount: 5
+    encoding: utf8
+  
+  file_error:
+    class: logging.handlers.RotatingFileHandler
+    level: ERROR
+    formatter: detailed
+    filename: ./logs/error.log
+    maxBytes: 5242880  # 5MB
+    backupCount: 5
+    encoding: utf8
+  
+  file_rag:
+    class: logging.handlers.RotatingFileHandler
+    level: DEBUG
+    formatter: detailed
+    filename: ./logs/rag_operations.log
+    maxBytes: 5242880  # 5MB
+    backupCount: 3
+    encoding: utf8
+  
+  file_api:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: detailed
+    filename: ./logs/api_calls.log
+    maxBytes: 5242880  # 5MB
+    backupCount: 5
+    encoding: utf8
+  
+  file_audit:
+    class: logging.handlers.RotatingFileHandler
+    level: INFO
+    formatter: json
+    filename: ./logs/audit.log
+    maxBytes: 10485760  # 10MB
+    backupCount: 10
+    encoding: utf8
+
+loggers:
+  app:
+    level: DEBUG
+    handlers:
+      - console
+      - file_app
+    propagate: no
+  
+  rag:
+    level: DEBUG
+    handlers:
+      - file_rag
+    propagate: no
+  
+  api:
+    level: INFO
+    handlers:
+      - console
+      - file_api
+    propagate: no
+  
+  audit:
+    level: INFO
+    handlers:
+      - file_audit
+    propagate: no
+  
+  ingestion:
+    level: DEBUG
+    handlers:
+      - file_app
+    propagate: no
+  
+  embeddings:
+    level: DEBUG
+    handlers:
+      - file_app
+    propagate: no
+  
+  vectorstore:
+    level: DEBUG
+    handlers:
+      - file_app
+    propagate: no
+  
+  security:
+    level: INFO
+    handlers:
+      - console
+      - file_error
+      - file_audit
+    propagate: no
+
+root:
+  level: WARNING
+  handlers:
+    - console
+    - file_error
+  propagate: no
